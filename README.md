@@ -7,4 +7,5 @@ This repository is computational physics2 final project. It about quantum state 
 3. Natdanai Pranenatwee 6105048
 4. Khunakorn Wongsriprasert 6005014
 
-![alt text]("C:\Users\Poram\OneDrive\Pictures\Camera Roll\all git command.PNG")
+
+![all git command](https://user-images.githubusercontent.com/64681582/141238399-2aa87158-4c5c-48b0-b11c-32950e2bcf77.PNG)
