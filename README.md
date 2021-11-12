@@ -1,4 +1,4 @@
-# Quantum-State-Tomography
+# QuantumStateTomography
 This repository is computational physics2 final project. It about quantum state tomography.
 
 === Contributor ===
