@@ -54,6 +54,7 @@ xlabel('Number of steps');
 ylabel('MSD (\delta^2)');
 title('MSD');
 
-printf('This is test by Pan')
+printf('This is test by P')
+printf('This is test2')
 
 
