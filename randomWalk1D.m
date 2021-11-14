@@ -54,4 +54,4 @@ xlabel('Number of steps');
 ylabel('MSD (\delta^2)');
 title('MSD');
 
-
+printf('test')
