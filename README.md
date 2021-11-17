@@ -4,7 +4,7 @@ This repository is computational physics2 final project. It about quantum state 
 === Contributor ===
 1. Poramat Chianvichai 6105194
 2. Suttavee Rojanasiriwanit 6105115
-3. Natdanai Pranenatwee 6105048
+3. Natdhanai Praneenatthavee 6105048
 4. Khunakorn Wongsriprasert 6005014
 
 === Git cheat sheet ===
