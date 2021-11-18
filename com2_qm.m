@@ -126,3 +126,5 @@ function [x_md, y_md, z_md] = minimumdistance(x_dit,y_dit,z_dit)
     y_md =sin(theta_md)*sin(phi_md);
     z_md =cos(theta_md);
 end
+
+fprintf('Sun hum lek')
