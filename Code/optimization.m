@@ -51,8 +51,8 @@ function [theta, phi, max_fidelity] = optimization(x, y, z)
     for row=1:181
         for col=1:361
             if real(fidel(row,col)) == max_fidelity
-                theta = row;
-                phi = col;
+                theta = row-1;
+                phi = col-1;
             end
         end
     end
