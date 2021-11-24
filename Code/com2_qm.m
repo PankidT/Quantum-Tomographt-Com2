@@ -8,12 +8,14 @@ z_ideal = cos(theta_ideal);
 [x_dit, y_dit, z_dit] = dit2(phi_ideal,theta_ideal, 100000);
 %md = minimum distance
 [x_md, y_md, z_md] = minimumdistance(x_dit,y_dit,z_dit);
-
+%update weights
+[xmd_numer, ymd_numer, zmd_numer] = MDnumerical(x_dit,y_dit,z_dit);
 %Plot Bloch sphere
 hold on
 ax1 = plot3(x_ideal,y_ideal,z_ideal,'.','MarkerSize',20,'MarkerEdgeColor','green','MarkerFaceColor',[1 .6 .6]);
 ax2 = plot3(x_dit,y_dit,z_dit,'.','MarkerSize',20,'MarkerEdgeColor','red','MarkerFaceColor',[1 .6 .6]);
 ax3 = plot3(x_md,y_md,z_md,'.','MarkerSize',20,'MarkerEdgeColor','blue','MarkerFaceColor',[1 .6 .6]);
+ax4 = plot3(xmd_numer,ymd_numer,zmd_numer,'.','MarkerSize',20,'MarkerEdgeColor','magenta','MarkerFaceColor',[1 .6 .6]);
 line([x_md x_dit],[y_md y_dit],[z_md z_dit],'Color',[1 0 0])
 [Xs, Ys, Zs] = sphere ;
 mysphere = surf( Xs, Ys, Zs) ;
@@ -38,7 +40,7 @@ hold off
 
 
 % legend(ax1,ax2,{'predicted point'},{'surface point at minimum distance'})
-legend('Ideal state', 'Direct inversion tomography','surface point at minimum distance')
+legend('Ideal state', 'Direct inversion tomography','surface point at minimum distance(analytic)','surface point at minimum distance(numerical)')
 fprintf(" x predict is %d\n y predict is %d\n z predict is %d\n",x_dit,y_dit,z_dit)
 fprintf(" Real x is %d\n Real y is %d\n Real z is %d\n",x_ideal,y_ideal,z_ideal)
 
@@ -125,4 +127,32 @@ function [x_md, y_md, z_md] = minimumdistance(x_dit,y_dit,z_dit)
     x_md =sin(theta_md)*cos(phi_md);
     y_md =sin(theta_md)*sin(phi_md);
     z_md =cos(theta_md);
+end
+
+%dtheta
+function d = devtheta(x,y,z,theta,phi)
+    d = 2*(((sin(phi).^(2)+cos(phi).^(2)-1)*cos(theta)+z)*sin(theta) + (-y*sin(phi)-x*cos(phi))*cos(theta));
+end
+
+%dphi
+function d = devphi(x,y,theta,phi)
+    d = 2*sin(theta)*(x*sin(phi)-y*cos(phi));
+end
+
+%numerical method for minimum distance 
+function [xmd_numer, ymd_numer, zmd_numer] = MDnumerical(x_dit,y_dit,z_dit)
+theta_initial = pi*rand ;
+phi_initial = 2*pi*rand ;
+alpha = 0.05;
+phi = phi_initial;
+theta = theta_initial;
+N=1000;
+for i = 1:N
+    theta = theta - alpha*devtheta(x_dit,y_dit,z_dit,theta,phi);
+    phi = phi - alpha*devphi(x_dit,y_dit,theta,phi);
+
+end
+    xmd_numer = sin(theta)*cos(phi);
+    ymd_numer = sin(theta)*sin(phi);
+    zmd_numer = cos(theta);
 end
