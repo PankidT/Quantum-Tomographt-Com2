@@ -41,12 +41,6 @@ function [theta, phi, max_fidelity] = optimization(x, y, z)
         index_phi=0;
     end
     
-    [X, Y] = meshgrid(phi_dum, theta_dum);
-    surf(X, Y, real(fidel))
-    xlabel('Phi');
-    ylabel('Theta');
-    zlabel('Fidelity');
-    
     max_fidelity = max(max(real(fidel)));
     for row=1:181
         for col=1:361
@@ -56,5 +50,18 @@ function [theta, phi, max_fidelity] = optimization(x, y, z)
             end
         end
     end
+    
+    [X, Y] = meshgrid(phi_dum, theta_dum);
+    Z = real(fidel);
+    surf(X, Y, Z, 'FaceAlpha', 1.0, 'EdgeColor', 'none')
+    hold on
+    idx_h = Z==max_fidelity ;
+    h = plot3(X(idx_h),Y(idx_h),Z(idx_h),'.r','markersize', 15);
+    legend(h, 'Maximum Fidelity')
+    xlabel('Phi');
+    ylabel('Theta');
+    zlabel('Fidelity');
+    title('Fidelity in each point of bloch sphere')
+    colorbar
     
 end
