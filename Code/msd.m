@@ -3,9 +3,9 @@ x = 2.296200e-01;
 y = 3.970800e-01;
 z = 8.277400e-01;
 
-[theta, phi, fidelity] = optimization(x, y, z)
+[theta, phi, fidelity] = max_fidelity(x, y, z)
 
-function [theta, phi, max_fidelity] = optimization(x, y, z)
+function [theta, phi, max_fidelity] = max_fidelity(x, y, z)
     
     i_mat = [1 0; 0 1];
     x_mat = [0 1; 1 0];
