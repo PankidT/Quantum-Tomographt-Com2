@@ -1,7 +1,7 @@
 clear;clc
 %Determine ideal state
-phi_ideal = 0;
-theta_ideal = pi/2;
+phi_ideal = pi/7;
+theta_ideal = pi/5;
 
 x_ideal = sin(theta_ideal)*cos(phi_ideal);
 y_ideal = sin(theta_ideal)*sin(phi_ideal);
@@ -96,7 +96,7 @@ function [x_dit, y_dit, z_dit] = dit_err(phi_ideal,theta_ideal, N)
     Ny_down = 0;
     Nz_up = 0;
     Nz_down = 0;
-    err =1;
+    err = pi/3;
     for n = 1:N
         x_ideal = sin(theta_ideal + 2*rand*err-err)*cos(phi_ideal + 2*rand*err-err);
         y_ideal = sin(theta_ideal + 2*rand*err-err)*sin(phi_ideal + 2*rand*err-err);
@@ -172,16 +172,16 @@ function [xmd_numer, ymd_numer, zmd_numer] = md_numer(x_dit,y_dit,z_dit)
 end
 
 %max fidelity
-function [x_mfd,y_mfd,z_mfd] = mfd(x, y, z)
+function [x_mfd,y_mfd,z_mfd] = mfd(x_dit, y_dit, z_dit)
     
     i_mat = [1 0; 0 1];
     x_mat = [0 1; 1 0];
     y_mat = [0 -1i; 1i 0];
     z_mat = [1 0; 0 -1];
-    rho_cart = 0.5*(i_mat + x_mat*x + y_mat*y + z_mat*z);
+    rho_cart = 0.5*(i_mat + x_mat*x_dit + y_mat*y_dit + z_mat*z_dit);
     
-    theta = atan(y/x);
-    phi = atan(sqrt(x^2 + y^2)/z);
+    theta_dit = atan2(y_dit,x_dit);
+    phi_dit = acos(z_dit/sqrt(x_dit^2+y_dit^2+z_dit^2));
     theta_dum = linspace(0, 180, 181);
     phi_dum = linspace(0, 360, 361);
     
@@ -208,17 +208,14 @@ function [x_mfd,y_mfd,z_mfd] = mfd(x, y, z)
         index_phi=0;
     end
     
-    
     max_fidelity = max(max(real(fidel)));
-    for row=1:181
-        for col=1:361
-            if real(fidel(row,col)) == max_fidelity
-                theta = row*pi/180;
-                phi = col*pi/180;
-            end
-        end
-    end
-    x_mfd = sin(theta)*cos(phi);
-    y_mfd = sin(theta)*sin(phi);
-    z_mfd = cos(theta);
+    [X, Y] = meshgrid(phi_dum, theta_dum);
+    Z = real(fidel);
+    idx_h = Z==max_fidelity ;
+    theta_mfd = X(idx_h)*pi/180;
+    phi_mfd = Y(idx_h)*pi/180;
+    x_mfd = sin(theta_mfd)*cos(phi_mfd);
+    y_mfd = sin(theta_mfd)*sin(phi_mfd);
+    z_mfd = cos(theta_mfd);
+
 end
