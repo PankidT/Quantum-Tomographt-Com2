@@ -1,11 +1,11 @@
-clear;clc
-r_dit = 1;
-phi_dit = 1;
-theta_dit = 1;
-
-x_dit = r_dit*sin(theta_dit)*cos(phi_dit);
-y_dit = r_dit*sin(theta_dit)*sin(phi_dit);
-z_dit = r_dit*cos(theta_dit);
+% clear;clc
+% r_dit = 1;
+% phi_dit = pi/7;
+% theta_dit = 0;
+% 
+% x_dit = r_dit*sin(theta_dit)*cos(phi_dit);
+% y_dit = r_dit*sin(theta_dit)*sin(phi_dit);
+% z_dit = r_dit*cos(theta_dit);
 
 [x_mfd,y_mfd,z_mfd] = mfd(x_dit, y_dit, z_dit);
 
@@ -46,7 +46,6 @@ function [x_mfd,y_mfd,z_mfd] = mfd(x_dit, y_dit, z_dit)
     end
     
     max_fidelity = max(max(real(fidel)));
-    
     [X, Y] = meshgrid(phi_dum, theta_dum);
     Z = real(fidel);
     surf(X, Y, Z, 'FaceAlpha', 1.0, 'EdgeColor', 'none')
@@ -60,8 +59,8 @@ function [x_mfd,y_mfd,z_mfd] = mfd(x_dit, y_dit, z_dit)
     zlabel('Fidelity');
     title('Fidelity in each point of bloch sphere');
     colorbar
-    theta_mfd = X(idx_h)*pi/180;
-    phi_mfd = Y(idx_h)*pi/180;
+    theta_mfd = Y(idx_h)*pi/180
+    phi_mfd = X(idx_h)*pi/180
     x_mfd = sin(theta_mfd)*cos(phi_mfd);
     y_mfd = sin(theta_mfd)*sin(phi_mfd);
     z_mfd = cos(theta_mfd);

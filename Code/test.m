@@ -1,14 +1,14 @@
 clear;clc
 %Determine ideal state
 phi_ideal = pi/7;
-theta_ideal = pi/5;
+theta_ideal = 0;
 
 x_ideal = sin(theta_ideal)*cos(phi_ideal);
 y_ideal = sin(theta_ideal)*sin(phi_ideal);
 z_ideal = cos(theta_ideal);
 
 %dit = direct inversion tomography
-num_measure = 10000; %determine number of measurement per basis(XYZ)
+num_measure = 100000; %determine number of measurement per basis(XYZ)
 prepare_err = true; %error of prepared state
 if prepare_err == true
     [x_dit, y_dit, z_dit] = dit_err(phi_ideal,theta_ideal, num_measure);
@@ -20,7 +20,7 @@ end
 [xmd_numer, ymd_numer, zmd_numer] = md_numer(x_dit,y_dit,z_dit); %optimization
 
 %mfd = maxfidelity
-[x_mfd,y_mfd,z_mfd] = mfd(x_dit, y_dit, z_dit);
+[x_mfd,y_mfd,z_mfd,max_fidelity] = mfd(x_dit, y_dit, z_dit);
 
 %Plot Bloch sphere
 hold on
@@ -172,7 +172,7 @@ function [xmd_numer, ymd_numer, zmd_numer] = md_numer(x_dit,y_dit,z_dit)
 end
 
 %max fidelity
-function [x_mfd,y_mfd,z_mfd] = mfd(x_dit, y_dit, z_dit)
+function [x_mfd,y_mfd,z_mfd,max_fidelity] = mfd(x_dit, y_dit, z_dit)
     
     i_mat = [1 0; 0 1];
     x_mat = [0 1; 1 0];
@@ -212,10 +212,9 @@ function [x_mfd,y_mfd,z_mfd] = mfd(x_dit, y_dit, z_dit)
     [X, Y] = meshgrid(phi_dum, theta_dum);
     Z = real(fidel);
     idx_h = Z==max_fidelity ;
-    theta_mfd = X(idx_h)*pi/180;
-    phi_mfd = Y(idx_h)*pi/180;
-    x_mfd = sin(theta_mfd)*cos(phi_mfd);
-    y_mfd = sin(theta_mfd)*sin(phi_mfd);
-    z_mfd = cos(theta_mfd);
-
+    theta_mfd = Y(idx_h)*pi/180;
+    phi_mfd = X(idx_h)*pi/180;
+    x_mfd = sin(theta_mfd(1))*cos(phi_mfd(1));
+    y_mfd = sin(theta_mfd(1))*sin(phi_mfd(1));
+    z_mfd = cos(theta_mfd(1));
 end
